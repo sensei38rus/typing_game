@@ -137,7 +137,7 @@ class GameState:
         else:
             # Ошибка!
             self.start_restart()
-            
+
     def start_restart(self):
         """Перезапуск уровня из-за ошибки или таймаута"""
         self.state = "RESTARTING"
@@ -180,3 +180,48 @@ class GameState:
             else:
                 self.state = "GAME_OVER"
                 self.stats.save_final_score(self.score)
+    
+    def draw(self):
+        """Отрисовка всего на экране"""
+        self.ui.draw_background()
+        
+        if self.state == "STARTING":
+            level_data = self.word_manager.get_level(self.current_level)
+            level_name = level_data["name"]
+            total_levels = self.word_manager.get_level_count()
+            
+            self.ui.draw_level_info(self.current_level, level_name, total_levels)
+            # НЕ показываем слово на стартовом экране (только отсчет)
+            # self.ui.draw_word(self.current_word)  # ЗАКОММЕНТИРОВАНО
+            self.ui.draw_starting_message(int(self.start_timer))
+            self.ui.draw_score(self.score)
+            
+        elif self.state == "PLAYING":
+            level_data = self.word_manager.get_level(self.current_level)
+            level_name = level_data["name"]
+            total_levels = self.word_manager.get_level_count()
+            
+            self.ui.draw_level_info(self.current_level, level_name, total_levels)
+            self.ui.draw_word(self.current_word)
+            self.ui.draw_user_input(self.user_input)
+            self.ui.draw_timer_bar(self.remaining_time, self.time_limit)
+            self.ui.draw_combo(self.combo)
+            self.ui.draw_score(self.score)
+            
+        elif self.state == "RESTARTING":
+            level_data = self.word_manager.get_level(self.current_level)
+            level_name = level_data["name"]
+            total_levels = self.word_manager.get_level_count()
+            
+            self.ui.draw_level_info(self.current_level, level_name, total_levels)
+            self.ui.draw_word(self.current_word)
+            self.ui.draw_restart_message(int(self.restart_timer))
+            self.ui.draw_score(self.score)
+            self.ui.draw_combo(self.combo)
+            
+        elif self.state == "LEVEL_COMPLETE":
+            self.ui.draw_level_complete()
+            self.ui.draw_score(self.score)
+            
+        elif self.state == "GAME_OVER":
+            self.ui.draw_game_over(self.score)
