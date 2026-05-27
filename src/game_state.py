@@ -41,3 +41,14 @@ class GameState:
             self.prepare_first_word()
         else:
             self.state = "GAME_OVER"
+            
+    def prepare_first_word(self):
+        """Подготавливает первое слово без отображения"""
+        if self.current_word_index < len(self.words):
+            self.current_word = self.words[self.current_word_index]
+            self.time_limit = self.calculate_timeout(self.current_word)
+            self.user_input = ""
+            # Не показываем слово, пока не начнется игра
+            self.show_word = False
+        else:
+            self.show_word = False
