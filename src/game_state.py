@@ -27,3 +27,17 @@ class GameState:
         
         # Загружаем первый уровень (но слово пока не показываем)
         self.load_level_without_display(self.current_level)
+
+    def load_level_without_display(self, level_idx):
+        """Загружает уровень, но не показывает первое слово (для стартового экрана)"""
+        level = self.word_manager.get_level(level_idx)
+        if level:
+            self.original_words = level["words"].copy()
+            self.words = level["words"].copy()
+            random.shuffle(self.words)
+            self.current_word_index = 0
+            self.combo = 1
+            # Подготавливаем первое слово, но не показываем его
+            self.prepare_first_word()
+        else:
+            self.state = "GAME_OVER"
