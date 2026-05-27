@@ -1,9 +1,9 @@
 import pygame
 import sys
-from src.word_manager import WordManager
-from src.ui import UI
-from src.stats import Stats
-from src.game_state import GameState
+from word_manager import WordManager
+from ui import UI
+from stats import Stats
+from game_state import GameState
 
 def main():
     pygame.init()
