@@ -73,3 +73,20 @@ class GameState:
         self.current_word_index = 0
         self.combo = 1
         self.next_word()
+
+    def next_word(self):
+        """Переход к следующему слову"""
+        if self.current_word_index >= len(self.words):
+            self.state = "LEVEL_COMPLETE"
+            return
+            
+        self.current_word = self.words[self.current_word_index]
+        self.time_limit = self.calculate_timeout(self.current_word)
+        self.user_input = ""
+        self.show_word = True  # Показываем слово
+        
+        if self.state == "PLAYING":
+            self.start_time = time.time()
+            self.remaining_time = self.time_limit
+        else:
+            self.remaining_time = self.time_limit
