@@ -109,4 +109,31 @@ class GameState:
         timeout = raw_time * combo_penalty
         return max(1.0, round(timeout, 1))
 
-    
+    def handle_input(self, event):
+        """Обработка ввода с клавиатуры"""
+        if self.state != "PLAYING":
+            return
+            
+        if event.key == pygame.K_BACKSPACE:
+            self.user_input = self.user_input[:-1]
+        elif event.key == pygame.K_RETURN:
+            self.check_answer()
+        else:
+            char = event.unicode
+            if char.isprintable() and len(char) == 1:
+                self.user_input += char
+                
+    def check_answer(self):
+        """Проверка правильности введенного слова"""
+        if self.user_input.strip().lower() == self.current_word.lower():
+            # Успех!
+            time_ratio = self.remaining_time / self.time_limit
+            points = int(100 * self.combo * time_ratio)
+            self.score += points
+            self.combo += 1
+            self.stats.record_success(self.current_word)
+            self.current_word_index += 1
+            self.next_word()
+        else:
+            # Ошибка!
+            self.start_restart()
