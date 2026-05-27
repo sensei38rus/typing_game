@@ -137,3 +137,46 @@ class GameState:
         else:
             # Ошибка!
             self.start_restart()
+            
+    def start_restart(self):
+        """Перезапуск уровня из-за ошибки или таймаута"""
+        self.state = "RESTARTING"
+        self.restart_timer = 3
+        self.stats.record_fail(self.current_word)
+        
+    def update(self, dt):
+        """Обновление состояния игры"""
+        if self.state == "STARTING":
+            self.start_timer -= dt
+            if self.start_timer <= 0:
+                self.state = "PLAYING"
+                # Теперь показываем первое слово и запускаем таймер
+                self.show_word = True
+                self.current_word = self.words[0]  # Берем первое слово
+                self.time_limit = self.calculate_timeout(self.current_word)
+                self.start_word_timer()
+                
+        elif self.state == "PLAYING":
+            elapsed = time.time() - self.start_time
+            self.remaining_time = max(0, self.time_limit - elapsed)
+            
+            if self.remaining_time <= 0:
+                self.start_restart()
+                
+        elif self.state == "RESTARTING":
+            self.restart_timer -= dt
+            if self.restart_timer <= 0:
+                self.state = "PLAYING"
+                self.restart_level()
+                self.start_word_timer()
+                
+        elif self.state == "LEVEL_COMPLETE":
+            self.current_level += 1
+            if self.current_level < self.word_manager.get_level_count():
+                self.load_level(self.current_level)
+                self.state = "STARTING"
+                self.start_timer = 3
+                self.show_word = False  # Прячем слово на стартовом экране
+            else:
+                self.state = "GAME_OVER"
+                self.stats.save_final_score(self.score)
