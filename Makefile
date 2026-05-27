@@ -4,7 +4,7 @@ install:
 	pip install -r requirements.txt
 
 run:
-	python main.py
+	python src/main.py
 
 test:
 	python -m pytest tests/ -v
