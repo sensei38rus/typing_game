@@ -26,3 +26,9 @@ class WordManager:
         for i, level in enumerate(default_levels):
             with open(f"{self.levels_folder}/level{i+1}.json", 'w', encoding='utf-8') as f:
                 json.dump(level, f, ensure_ascii=False, indent=2)
+
+    def get_level(self, index):
+        return self.levels[index] if index < len(self.levels) else None
+        
+    def get_level_count(self):
+        return len(self.levels)
