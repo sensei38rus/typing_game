@@ -15,3 +15,12 @@ def test_word_manager_loads_existing_files(tmp_path):
     assert wm.get_level_count() == 1
     assert wm.get_level(0)["name"] == "Test Level"
     assert len(wm.get_level(0)["words"]) == 2
+
+def test_word_manager_creates_defaults_if_empty(tmp_path):
+    # Указываем пустую временную директорию
+    empty_dir = tmp_path / "empty_levels"
+    wm = WordManager(levels_folder=str(empty_dir))
+    
+    # Должны создаться 3 стандартных уровня
+    assert wm.get_level_count() == 3
+    assert wm.get_level(0)["name"] == "Уровень 1 — Простые слова"
