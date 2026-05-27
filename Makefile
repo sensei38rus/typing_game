@@ -7,7 +7,7 @@ run:
 	python main.py
 
 test:
-	pytest tests/ -v
+	python -m pytest tests/ -v
 
 clean:
 	rm -rf __pycache__
