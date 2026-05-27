@@ -41,7 +41,7 @@ class GameState:
             self.prepare_first_word()
         else:
             self.state = "GAME_OVER"
-            
+
     def prepare_first_word(self):
         """Подготавливает первое слово без отображения"""
         if self.current_word_index < len(self.words):
@@ -52,3 +52,24 @@ class GameState:
             self.show_word = False
         else:
             self.show_word = False
+
+    def load_level(self, level_idx):
+        """Загружает уровень и сразу показывает первое слово"""
+        level = self.word_manager.get_level(level_idx)
+        if level:
+            self.original_words = level["words"].copy()
+            self.words = level["words"].copy()
+            random.shuffle(self.words)
+            self.current_word_index = 0
+            self.combo = 1
+            self.next_word()
+        else:
+            self.state = "GAME_OVER"
+            
+    def restart_level(self):
+        """Перезапуск текущего уровня с новым случайным порядком слов"""
+        self.words = self.original_words.copy()
+        random.shuffle(self.words)
+        self.current_word_index = 0
+        self.combo = 1
+        self.next_word()
