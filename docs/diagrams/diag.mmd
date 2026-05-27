@@ -1,0 +1,40 @@
+graph TD
+    %% Стилизация узлов
+    classDef root fill:#f9f,stroke:#333,stroke-width:2px,color:#000;
+    classDef src fill:#bbf,stroke:#333,stroke-width:1px,color:#000;
+    classDef storage fill:#ffd,stroke:#333,stroke-width:1px,color:#000;
+
+    subgraph Root [Корень проекта]
+        Main[main.py <br/> Точка входа и игровой цикл]:::root
+    end
+
+    subgraph Src [Папка src / Модули логики]
+        GS[GameState <br/> Управляет состояниями игры]:::src
+        WM[WordManager <br/> Загружает и отдает слова]:::src
+        UI[UI <br/> Отрисовывает интерфейс в Pygame]:::src
+        ST[Stats <br/> Считает точность и очки]:::src
+        IH[InputHandler <br/> Собирает нажатия клавиш]:::src
+        TM[GameTimer <br/> Ведет отсчет времени]:::src
+    end
+
+    subgraph Data [Хранилище данных / JSON]
+        JSON_L[(data/levels/*.json <br/> Списки слов)]:::storage
+        JSON_S[(user_data/progress.json <br/> Сейвы игрока)]:::storage
+    end
+
+    %% Взаимосвязи при инициализации
+    Main -->|1. Инициализирует| WM
+    Main -->|2. Инициализирует| UI
+    Main -->|3. Инициализирует| ST
+    Main -->|4. Передает зависимости и запускает| GS
+
+    %% Взаимосвязи внутри игрового цикла (Бизнес-логика)
+    GS -->|Запрашивает слова| WM
+    GS -->|Передает данные для рендера| UI
+    GS -->|Фиксирует успехи / ошибки| ST
+    GS -->|Опрашивает текущий ввод| IH
+    GS -->|Запускает / сбрасывает| TM
+
+    %% Работа с файлами
+    WM -->|Читает конфигурацию уровней| JSON_L
+    ST -->|Записывает и читает историю| JSON_S
