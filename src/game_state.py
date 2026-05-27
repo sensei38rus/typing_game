@@ -90,3 +90,23 @@ class GameState:
             self.remaining_time = self.time_limit
         else:
             self.remaining_time = self.time_limit
+
+    def start_word_timer(self):
+        """Запускает таймер для текущего слова"""
+        self.start_time = time.time()
+        self.remaining_time = self.time_limit
+        
+    def calculate_timeout(self, word):
+        """Расчет времени на слово в зависимости от длины и комбо"""
+        base = 1.5
+        per_char = 0.3
+        length = len(word)
+        raw_time = base + (length * per_char)
+        
+        combo_penalty = 1.0 - (self.combo - 1) * 0.05
+        combo_penalty = max(0.7, combo_penalty)
+        
+        timeout = raw_time * combo_penalty
+        return max(1.0, round(timeout, 1))
+
+    
