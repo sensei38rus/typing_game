@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  # Сервис для запуска автотестов в изоляции
+  test:
+    build: .
+    container_name: typing_game_test
+    volumes:
+      - .:/app
+    command: make test
+
+  # Сервис для попытки запуска самой игры (может потребовать настройки X11 на хосте)
+  game:
+    build: .
+    container_name: typing_game_app
+    environment:
+      - DISPLAY=${DISPLAY}
+    # Объединенный блок volumes
+    volumes:
+      - .:/app
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    command: make run
