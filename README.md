@@ -41,7 +41,7 @@ make install
 ```
 
 2. **Запуск игры:**
-   ```bash
+ ```bash
 make run
 ```
 
@@ -51,7 +51,7 @@ make test
 ```
 
 4. **Очистка временных файлов (pycache, кэш pytest):**
-   ```bash
+```bash
 make clean
 ```
 
