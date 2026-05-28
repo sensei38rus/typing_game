@@ -1,7 +1,7 @@
 import pytest
 import pygame
 from unittest.mock import Mock, patch
-from ui import UI
+from src.ui import UI
 
 
 @pytest.fixture
