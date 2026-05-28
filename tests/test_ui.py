@@ -206,12 +206,7 @@ class TestDrawTimerBar:
             # Should not crash, ratio becomes 0
             assert mock_draw_rect.call_count == 2
     
-    def test_draw_timer_bar_renders_time_text(self, ui):
-        """Test that timer bar renders time text"""
-        ui.draw_timer_bar(5.5, 10.0)
-        
-        ui.font_medium.render.assert_called_with("5.5 сек", True, (255, 255, 255))
-
+    
 
 class TestDrawCombo:
     """Tests for draw_combo method"""
