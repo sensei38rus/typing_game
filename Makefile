@@ -17,6 +17,9 @@ run:
 test:
 	python -m pytest tests/ -v
 
+test_cov:
+	python -m pytest tests/ -v --cov=. --cov-report=html
+
 clean:
 	rm -rf __pycache__
 	rm -rf src/__pycache__
