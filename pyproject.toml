@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "TypingGame"
+version = "0.1.0"
+description = "Typing trainer"
+readme = "README.md"
+authors = [{ name = "sensei38rus", email = "shiowdima1337@gmail.com" },
+            {name = "AlexeyStack", email = "alexeystack840@gmail.com"}]
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+]
+
+dependencies = [
+    "pygame==2.5.2",
+    "pytest==8.1.1",   # пример внешних зависимостей
+]
+
+[project.urls]
+Homepage = "https://github.com/sensei38rus/typing_game"
+
+[tool.setuptools.packages.find]
+where = ["src"]

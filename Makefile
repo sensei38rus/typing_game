@@ -1,5 +1,13 @@
 .PHONY: install run test clean
 
+
+build:
+	python -m build
+
+install-pack:
+	pip install -e .
+
+
 install:
 	pip install -r requirements.txt
 
